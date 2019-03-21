@@ -22,6 +22,26 @@ class Store extends Component {
         //this.setState({fishes})
     }
 
+    updateFish = (key, updateFish) => {
+        //1. Take a copy of the current state
+        const fishes = { ...this.state.fishes }
+        //2. Update that state
+        fishes[key] = updateFish
+        //3. Set that to state
+        this.setState({ fishes: fishes })
+        //or
+        //this.setState({fishes})
+    }
+
+    deleteFish = (key) => {
+        //1. Take a copy of state
+        const fishes = { ...this.state.fishes }
+        //2. Update the object
+        delete fishes[key]
+        //3. Update the state
+        this.setState({ fishes })
+    }
+
     loadSampleFishes = () => {
         this.setState({ fishes: fishes })
     }
@@ -35,6 +55,15 @@ class Store extends Component {
         this.setState({ order })
     }
 
+    removeFromOrder = key => {
+        //1. Take a copy of the state
+        const order = { ...this.state.order }
+        //2. Remove selected item from order
+        delete order[key]
+        //3. Update the state
+        this.setState({ order })
+    }
+
     render() {
         return (
             <div className="catch-of-the-day">
@@ -44,8 +73,12 @@ class Store extends Component {
                         {Object.keys(this.state.fishes).map(key => <Fish key={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} index={key} />)}
                     </ul>
                 </div>
-                <Order fishes={this.state.fishes} order={this.state.order} />
-                <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} />
+                <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder} />
+                <Inventory addFish={this.addFish}
+                    updateFish={this.updateFish}
+                    deleteFish={this.deleteFish}
+                    loadSampleFishes={this.loadSampleFishes}
+                    fishes={this.state.fishes} />
             </div>
         )
     }
